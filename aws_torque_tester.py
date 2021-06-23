@@ -20,7 +20,7 @@ st.set_page_config(
 
 #---------------------------------------------------------------------------------------------------------------------
 toasty = Image.open('toasty.png')
-ztbanner = Image.open(r'C:\Users\luis.peguero\Desktop\Projects\AWS_DEF\ztbanner.png')
+ztbanner = Image.open('ztbanner.png')
 aws_f = r'C:\Users\luis.peguero\Desktop\Projects\AWS_DEF\torque_record'
 main_column, s_column, t_column = st.beta_columns(3)
 # nm_ = st.beta_container()
