@@ -41,7 +41,7 @@ c_date = today.strftime('%m/%d/%y')
 full_date = today_time.strftime('%m/%d/%y, %H:%M:%S')
 
 #Dataframe-----------------------------------------------------------------------------------------------------------
-csv_file = r'C:\Users\luis.peguero\Desktop\Projects\AWS_DEF\aws_torque_data.csv'
+csv_file = 'aws_torque_data.csv'
 data = pd.read_csv(csv_file)
 global df
 df = pd.DataFrame(data)
