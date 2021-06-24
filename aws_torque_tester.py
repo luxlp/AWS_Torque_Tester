@@ -210,7 +210,7 @@ with t_column:
     nm = df['nominal_torque'].drop_duplicates().sort_values()
     location = df['location'].drop_duplicates().sort_values()
     try:
-        textdf = pd.read_table(f'{aws_f}/{user_input}.txt', header=None)
+        textdf = pd.read_table(f'{user_input}.txt', header=None)
     except:
         pass
     
