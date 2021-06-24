@@ -5,6 +5,7 @@ import pandas as pd
 from datetime import date
 from datetime import datetime
 from PIL import Image
+from pathlib import Path
 import os
 
 
@@ -19,9 +20,11 @@ st.set_page_config(
 
 
 #---------------------------------------------------------------------------------------------------------------------
-toasty = Image.open('toasty.png')
-ztbanner = Image.open('ztbanner.png')
-aws_f = r'C:\Users\luis.peguero\Desktop\Projects\AWS_DEF\torque_record'
+m_folder = Path(__file__).absolute().parent
+toasty = Image.open(m_folder / 'toasty.png')
+ztbanner = Image.open(m_folder / 'ztbanner.png')
+aws_f = m_folder / 'torque_record'
+
 main_column, s_column, t_column = st.beta_columns(3)
 # nm_ = st.beta_container()
 re_write = st.empty()
@@ -41,7 +44,7 @@ c_date = today.strftime('%m/%d/%y')
 full_date = today_time.strftime('%m/%d/%y, %H:%M:%S')
 
 #Dataframe-----------------------------------------------------------------------------------------------------------
-csv_file = 'aws_torque_data.csv'
+csv_file = m_folder / 'aws_torque_data.csv'
 data = pd.read_csv(csv_file)
 global df
 df = pd.DataFrame(data)
@@ -74,7 +77,7 @@ def run():
                 hold1.append(str1)
                 counterp += 1
                 with open(os.path.join(aws_f, f'{user_input}.txt'), 'a') as file:
-                    file.writelines([full_date, ' | ','pass' ,' | ', user_input, ' | ', torque_id, ' | ', str1 ])
+                    file.writelines([full_date, ' | ','pass' ,' | ', user_input, ' | ', torque_id, ' | ', str1])
                 re_write.success(str1 + 'Pass')
                 sleep(1.5)
                 if counterp == 3:
@@ -93,7 +96,7 @@ def run():
                 hold2.append(str1)
                 counterf += 1
                 with open(os.path.join(aws_f, f'{user_input}.txt'), 'a') as file:
-                    file.writelines([full_date, ' | ', 'fail', ' | ', user_input, ' | ', torque_id, ' | ', str1,])
+                    file.writelines([full_date, ' | ', 'fail', ' | ', user_input, ' | ', torque_id, ' | ', str1])
                 re_write.error(str1 + 'Fail')
                 fail_image.image(toasty, caption='Toasty!', width=95)
                 sleep(1.5)
@@ -129,8 +132,6 @@ def filtering1(df):
         df
     else:
         df1
-
-
 
 
 #SideBar-------------------------------------------------------------------------------------------------------------
@@ -208,22 +209,20 @@ with t_column:
     br = df['brand'].drop_duplicates().sort_values()
     nm = df['nominal_torque'].drop_duplicates().sort_values()
     location = df['location'].drop_duplicates().sort_values()
+    try:
+        textdf = pd.read_table(f'{aws_f}/{user_input}.txt', header=None)
+    except:
+        pass
     
     #user input------------------------------------------------------------------------------------------------------
     try:
         if user_input in df.values:
             st.write(df[df['asset_tag']==user_input])
+            st.write(textdf)
         elif user_input == '':
             st.write('Type in an Asset Tag #')
         elif user_input not in df:
             del_text.write(f"Asset number: **{user_input}**, not in dataframe, check spelling. :sleuth_or_spy:")
-
-            # if st.button('Save'):
-            #     try:
-            #         df.to_csv(csv_file, index=False)
-            #         st.success(f'CSV file updated on: {today}')
-            #     except ValueError:
-            #         st.error('CSV file is open by another program, please close that program (excel...)') 
     except:
         pass
 
